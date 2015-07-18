@@ -70,6 +70,7 @@ $(document).on('click','.export',function(e){
 $(document).on('click','.exportall',function(e){
 	e.preventDefault();
 	var link = document.createElement('a');
+	var downloadType = $('input[name="exporttype"]').prop('checked');
     if(downloadType)
 	    link.href = "api/export.php?current";
 	else
@@ -83,6 +84,7 @@ $(document).on('click','.exportall',function(e){
 $(document).on('click','.exportfrom',function(e){
 	e.preventDefault();
 	var link = document.createElement('a');
+	var downloadType = $('input[name="exporttype"]').prop('checked');
 	if(downloadType)
 	    link.href = "api/export.php"+"?fromDate="+$('.fromdateval').val();
 	else
