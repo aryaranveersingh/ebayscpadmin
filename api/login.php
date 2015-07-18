@@ -1,11 +1,16 @@
 <?php
 
-$username="fayhan@hotmail.de"; 
-$password="lalezar8485"; 
+
+//"fayhan@hotmail.de"; 
+//"lalezar8485"
+$username=$_POST['user'];
+$password=$_POST['pass']; 
+
+
 $url="https://kleinanzeigen.ebay.de/anzeigen/m-einloggen.html"; 
 
 
-$postdata = "loginMail=".$username."&password=".$password."&targetUrl="; 
+$postdata = "loginMail=".$username."&password=".$password."&targetUrl=";
 
 $ch = curl_init(); 
 curl_setopt ($ch, CURLOPT_URL, $url); 

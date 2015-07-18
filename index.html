@@ -15,12 +15,38 @@
 		</div>
 		<div class=" forms-container">
 			
-			<p class="deletepannel"><button class="btn btn-stop login">Login</button><span class="colspan"></span><button class="btn btn-stop remove">Delete Database</button><span class="colspan"></span><button class="btn btn-stop removeall">Delete All Databases</button></p>
-			<form class="form-inline">
-			  <button type="submit" class="btn btn-primary startscrape">Start</button>
-			  <button type="submit" class="btn btn-info export" >Export Results</button>
-			  <button type="submit" class="btn btn-info exportall" >Export All</button>
+			<form class="form well" action="#">
+				<p><h3><b>kleinanzeigen.ebay.de Login</b></h3></p>
+				<div class="form-group">
+					<label>Username</label>
+					<input class="form-control username"type="text" placeholder="username" name="username"/>
+				</div>
+				<div class="form-group">
+					<label>Password</label>
+					<input class="form-control password" type="password" placeholder="password" name="password"/>
+				</div>
+				<button class="btn btn-stop login">Login</button><span class="colspan"></span>
 			</form>
+			<hr />
+				<div class="input-group">
+			      	<span><input type="radio" class="exporttype" value="csv" name="exporttype" checked > CSV <span><span class="colspan"></span><span><input type="radio" class="exporttype" value="excel" name="exporttype" > Excel</span>
+			    </div>
+			<hr/>
+			<form class="form well" action="#">
+				<div class="form-group">
+					<label>Please enter from date (YYYY-MMM-DD)</label>
+					<input type="text" class="form-control fromdateval" name="fromdate" placeholder="YYYY-MMM-DD">
+				</div>
+				<button type="submit" class="btn btn-info exportfrom" >Export Phone</button><span class="colspan"></span>
+			</form>
+			<p>
+				<button type="submit" class="btn btn-info export" >Export Todays Results</button>
+				<button type="submit" class="btn btn-info exportall" >Export All</button>
+			</p>
+			<div class=""></div>
+			<hr />
+			<p class="deletepannel"><button type="submit" class="btn btn-primary startscrape">Start Script</button><span class="colspan"></span><button class="btn btn-stop removeall">Delete All Databases</button></p>
+			
 
 		</div>
 		<div class="container-fluid well logs">
@@ -34,9 +60,6 @@
 				$('.vtype').selectpicker({
 					tickIcon: 'none' 
 				});
-				// $('.cars').show().selectpicker({
-				// 	tickIcon: 'none' 
-				// });
 			});
 		</script>
 	</body>

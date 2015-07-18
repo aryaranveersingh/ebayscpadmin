@@ -27,7 +27,7 @@ $(document).on('click','.startscrape',function(e){
 		$('.removeall').attr('disabled',true);
 		$(this).removeClass('btn-primary').addClass('stopper').html('Stop');
 		$.ajax({
-			url:'api/class.Scraper.php',
+			url:'api/start.php',
 			success:function(a){
 				console.log('requested scraping');
 			}
@@ -53,8 +53,14 @@ $(document).on('click','.stopper',function(e){
 
 $(document).on('click','.export',function(e){
 	e.preventDefault();
+
 	var link = document.createElement('a');
-    link.href = "api/export.php?current";
+    var downloadType = $('input[name="exporttype"]').prop('checked');
+    console.log(downloadType);
+	if(downloadType)
+	    link.href = "api/export.php?current";
+	else
+		link.href = "api/print_excel.php?current";
     link.target = '_blank';
     document.body.appendChild(link);
     link.click();
@@ -65,6 +71,16 @@ $(document).on('click','.exportall',function(e){
 	e.preventDefault();
 	var link = document.createElement('a');
     link.href = "api/export.php";
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    $(link).remove();
+});
+
+$(document).on('click','.exportfrom',function(e){
+	e.preventDefault();
+	var link = document.createElement('a');
+    link.href = "api/export.php"+"?fromDate="+$('.fromdateval').val();
     link.target = '_blank';
     document.body.appendChild(link);
     link.click();
@@ -104,6 +120,8 @@ $(document).on('click','.login',function(e){
 	{
 		$.ajax({
 			url:'api/login.php',
+			type:'POST',
+			data:{pass:$('.password').val(),user:$('.username').val()},
 			success:function(a){
 				alert("Login was successfull");
 			}
@@ -133,5 +151,5 @@ $(document).ready(function(){
 				$('.logs').html(a);
 			}
 		});
-	}, 500);
+	}, 1400);
 });

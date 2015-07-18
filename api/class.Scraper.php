@@ -55,14 +55,17 @@ class ScraperX{
 						$tmplink = "http://kleinanzeigen.ebay.de".$tmplink;
 						$newHTML = file_get_html($tmplink,'kleinanzeigen.ebay.de');
 						$phone = $newHTML -> find('.phoneline-number',0) -> plaintext;
+
 						if(strpos($phone,"...") !== false){
 							$this -> writeLog("<br/>| <strong>Your session is expired<br/>1) Please click on stop.<br/>2) Please click on Login to start a new session<br/>3) Start the script.</strong> |");
 							exit();
-						} 
+						}
+
+						$phone = $this -> extractPhone($phone);
 						$this -> writeLog("<br/>| Scraping ads URL => ".$tmplink." | contact no. - ".$phone."|");
-						// echo "==".substr(trim($phone), 0, 1);
+						
 						if(!empty(trim($phone))) {
-								$phone = $this -> extractPhone($phone);
+								$this -> writeLog("<br/>|final Phone $phone |");
 								fputcsv($this -> handle, array($phone));
 								mysql_query('INSERT IGNORE INTO phoneDatabase(phone,adddate) VALUES("'.$phone.'","'.date('d-M-Y',strtotime('now')).'")');
 						}
@@ -99,9 +102,14 @@ class ScraperX{
 							if(strpos($phone,"...") !== false){
 								$this -> writeLog("<br/>| <strong>Your session is expired please click on Login to login again and start the script.</strong> |");
 								exit();
-							} 
+							}
+							
+							$phone = $this -> extractPhone($phone);
+							$this -> writeLog("<br/>| Scraping ads URL => ".$tmplink." | contact no. - ".$phone."|");
+
+
 							if(!empty(trim($phone))) {
-								$phone = $this -> extractPhone($phone);
+								$this -> writeLog("<br/>|final Phone $phone |");
 								fputcsv($this -> handle, array($phone));
 								mysql_query('INSERT IGNORE INTO phoneDatabase(phone,adddate) VALUES("'.$phone.'","'.date('d-M-Y',strtotime('now')).'")');
 							}
@@ -117,10 +125,6 @@ class ScraperX{
 				}
 
 
-			}
-			if($key % 20 == 0){
-				$this -> writeLog("<br/>| Pausing script for 10 seconds to avoid abuse... |");
-				sleep(10);
 			}
 
 		}
@@ -146,22 +150,20 @@ class ScraperX{
 		}
 	}
 	private function extractPhone($text){
-		$this -> writeLog("Formating and validating $text");
-		$str = str_replace("Tel", "", $text);
-		$str = str_replace(".", "", $str);
-		$str = str_replace(":", "", $str);
-		$str = str_replace("(", "", $str);
-		$str = str_replace(")", "", $str);
-		$str = str_replace("+49", "", $str);
-		$str = str_replace("&nbsp;", "", $str);
-		$str = (string)trim($str);
-		$this -> writeLog(strlen($str)." ".substr($str,0,3) ."== '015' ".substr($str,0,3) ."== '016' ". substr($str,0,3) ." == '017' ".substr($str,0,2) ." == '15' ". substr($str,0,2) ."== '16' ". substr($str,0,2) ." == '17'");
-		if((strlen($str) == 10 || strlen($str) == 11) && (substr($str,0,3) == '015' || substr($str,0,3) == '016' || substr($str,0,3) == '017' || substr($str,0,2) == 15 || substr($str,0,2) == 16 || substr($str,0,2) == 17) && $str != 0){
-			return $str;
+		$text = ltrim($text, '0');
+
+		$this -> writeLog("<br/> Formating and validating $text");
+		$phone = preg_replace('/[^A-Za-z0-9]/', '', $text);
+		$length = strlen($phone);
+		$cases = ((substr($phone,0,2) === '15') or (substr($phone,0,2) === '16') or (substr($phone,0,2) === '17')) ? 1 : 0;
+		$this -> writeLog("<br/> Numbers starting from 15 16 17 ? $cases");
+		$lengthcase = (($length == 10) or ($length == 11)) ? 1: 0;
+		if($lengthcase === 1 and $cases === 1) {
+			$this -> writeLog( "<br/> Number is valid $phone");
+			return $phone;
 		}
-		else{
-			return '';
-		}
+		return NULL;
+
 	}
 
 }
