@@ -14,6 +14,7 @@ else
 
 $handle = fopen('export.csv', 'a+');
 fputcsv($handle, array('phone','adddate'));
+
 while($row = mysql_fetch_assoc($result))
 {
 		fputcsv($handle, array($row['phone'],$row['adddate']));

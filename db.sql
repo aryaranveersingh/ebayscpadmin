@@ -28,6 +28,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `phoneDatabase` (
   `phone` int(11) DEFAULT NULL,
+  `adddate` varchar(100) NOT NULL,
   `id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -40,7 +41,8 @@ CREATE TABLE `phoneDatabase` (
 --
 ALTER TABLE `phoneDatabase`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `phone` (`phone`);
+  ADD UNIQUE KEY `phone` (`phone`),
+  ADD KEY `adddate` (`adddate`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -51,6 +53,3 @@ ALTER TABLE `phoneDatabase`
 --
 ALTER TABLE `phoneDatabase`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

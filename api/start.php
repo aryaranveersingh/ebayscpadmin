@@ -1,3 +1,3 @@
 <?php
 
-print_r(exec("../start_m"));
+include 'class.Scraper.php';
